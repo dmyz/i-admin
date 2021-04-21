@@ -16,6 +16,7 @@ module.exports = {
     'import/no-absolute-path': 'off',
     'import/no-extraneous-dependencies': 'off',
     'vue/no-multiple-template-root': 'off',
+    'vue/no-v-model-argument': 'off',
     'no-console': 'off', // console
     // 'no-shadow': ['error', { builtinGlobals: false, hoist: 'never', allow: [] }],
     'no-param-reassign': 'off', // 不允许重新分配函数参数

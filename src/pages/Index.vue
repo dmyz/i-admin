@@ -14,7 +14,7 @@
             overflowY: 'auto'
           }"
         >
-          <router-view />
+          <router-view></router-view>
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import HeaderLayout from '@layout/HeaderLayout.vue'
 import SiderLayout from '@layout/SiderLayout.vue'
 import BreadcrumbLayout from '@layout/BreadcrumbLayout.vue'
@@ -36,7 +37,11 @@ export default {
     TagsLayout
   },
   setup() {
-    return {}
+    const transitionName = ref('')
+
+    return {
+      transitionName
+    }
   }
 }
 </script>
