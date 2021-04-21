@@ -5,6 +5,10 @@
     </a-card>
 
     <a-table bordered row-key="userId" :dataSource="dataSource" :columns="columns">
+      <template #role="{ text }">
+        {{ findRole(text) }}
+      </template>
+
       <template #status="{ text }">
         <a-tag color="#2db7f5" v-if="text === '1'">正常</a-tag>
         <a-tag color="#87d068" v-else>失效</a-tag>
@@ -34,6 +38,13 @@
       <a-form-item ref="nickname" label="昵称" name="nickname">
         <a-input v-model:value="userState.nickname" />
       </a-form-item>
+      <a-form-item label="角色" name="role">
+        <a-select v-model:value="userState.role">
+          <a-select-option v-for="role in roleLIst" :key="role.roleId" :value="role.roleId">
+            {{ role.roleName }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
       <a-form-item label="状态" name="status">
         <a-radio-group v-model:value="userState.status">
           <a-radio value="1">正常</a-radio>
@@ -56,7 +67,8 @@ export default {
       dataSource: [],
       title: '',
       visible: false,
-      userState: {}
+      userState: {},
+      roleLIst: []
     })
 
     const initUserState = {
@@ -82,7 +94,8 @@ export default {
       {
         title: '角色',
         dataIndex: 'role',
-        key: 'role'
+        key: 'role',
+        slots: { customRender: 'role' }
       },
       {
         title: '状态',
@@ -124,21 +137,32 @@ export default {
           loginName: 'JohnBrown',
           nickname: 'John Brown',
           status: '1',
-          role: '系统管理员'
+          role: '1'
         },
         {
           userId: '2',
           loginName: 'Jim Green',
           nickname: 'JimGreen',
           status: '1',
-          role: '普通管理员'
+          role: '2'
         },
         {
           userId: '3',
           loginName: 'Joe Black',
           nickname: 'JoeBlack',
           status: '0',
-          role: '普通管理员'
+          role: '2'
+        }
+      ]
+
+      state.roleLIst = [
+        {
+          roleId: '1',
+          roleName: '系统管理员'
+        },
+        {
+          roleId: '2',
+          roleName: '普通管理员'
         }
       ]
     })
@@ -153,7 +177,7 @@ export default {
     const handleEdit = (record) => {
       state.title = '编辑管理员'
       state.visible = true
-      state.userState = record
+      state.userState = { ...record }
     }
     // 删除
     const handleDel = (record) => {
@@ -163,7 +187,7 @@ export default {
         icon: createVNode(ExclamationCircleOutlined),
         okText: '确认',
         cancelText: '取消',
-        onOk(e) {
+        onOk() {
           console.log('删除')
 
           return Promise.resolve()
@@ -190,6 +214,11 @@ export default {
       state.userState = {}
     }
 
+    const findRole = (roleid) => {
+      const role = state.roleLIst.find((value) => value.roleId === roleid)
+      return role ? role.roleName : ''
+    }
+
     return {
       ...toRefs(state),
       userRef,
@@ -201,7 +230,8 @@ export default {
       handleCancel,
       userRules,
       labelCol: { span: 6 },
-      wrapperCol: { span: 18 }
+      wrapperCol: { span: 18 },
+      findRole
     }
   }
 }
