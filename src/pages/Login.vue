@@ -1,24 +1,32 @@
 <template>
   <div>login</div>
+
+  <a-button type="primary" @click="login">登录</a-button>
 </template>
 
 <script lang="ts">
-import { onBeforeMount, onMounted, reactive, toRefs } from 'vue'
+import { onMounted, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
-  name: 'HeaderLayout',
+  name: 'Login',
   setup() {
-    // console.log('1-开始创建组件-setup')
     const data = reactive({})
-    onBeforeMount(() => {
-      // console.log('2.组件挂载页面之前执行----onBeforeMount')
-    })
     onMounted(() => {
       // console.log('3.-组件挂载到页面之后执行-------onMounted')
     })
     const refData = toRefs(data)
+
+    const { push } = useRouter()
+
+    const login = () => {
+      sessionStorage.setItem('token', '1123')
+      push('/')
+    }
+
     return {
-      ...refData
+      ...refData,
+      login
     }
   }
 }
